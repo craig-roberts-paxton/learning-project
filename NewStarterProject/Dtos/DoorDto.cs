@@ -1,21 +1,15 @@
-﻿namespace NewStarterProject.Model
+﻿namespace NewStarterProject.Dtos
 {
-    /// <summary>
-    /// A door
-    /// </summary>
     public class DoorDto
     {
-
         /// <summary>
-        /// Unique identifier of the door
+        /// Unique DoorId
         /// </summary>
         public int DoorId { get; set; }
 
-
         /// <summary>
-        /// The door's name
+        /// Name of the door
         /// </summary>
         public string DoorName { get; set;}
-
     }
 }

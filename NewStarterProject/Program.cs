@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using NewStarterProject.Model;
+using NewStarterProject.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -6,9 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddDbContext<StarterProjectContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
+
+
 #if DEBUG
 
-    builder.Services.AddOpenApiDocument();
+builder.Services.AddOpenApiDocument();
 
 #endif
 
