@@ -9,8 +9,13 @@ namespace NewStarterProject.Services
         private StarterProjectContext _context;
 
 
-        public DoorService(StarterProjectContext context) {  _context = context; }
+        public DoorService(StarterProjectContext context)
+        {
+            _context = context;
+        }
 
+
+        #region Create or Update
 
         /// <summary>
         /// Create or update a door
@@ -30,7 +35,11 @@ namespace NewStarterProject.Services
             // Otherwise create a new one
             else
             {
-                door = new Door();
+                door = new Door
+                {
+                    IsActive = true
+                };
+
                 _context.Doors.Add(door);
                 
             }
@@ -47,7 +56,7 @@ namespace NewStarterProject.Services
 
         }
 
-
+        #endregion
 
         /// <summary>
         /// Get a Door by Id
@@ -56,7 +65,7 @@ namespace NewStarterProject.Services
         /// <returns></returns>
         public async Task<DoorDto> Get(int id)
         {
-            var door = await _context.Doors.SingleOrDefaultAsync(a => a.DoorId == id);
+            var door = await _context.Doors.SingleOrDefaultAsync(a => a.DoorId == id && a.IsActive);
 
             return new DoorDto()
             {
@@ -72,7 +81,7 @@ namespace NewStarterProject.Services
         /// <returns></returns>
         public async Task<List<DoorDto>> GetAllDoors()
         {
-            return await _context.Doors.Select(a => new DoorDto
+            return await _context.Doors.Where(a => a.IsActive).Select(a => new DoorDto
             {
                 DoorId = a.DoorId,
                 DoorName = a.DoorName
@@ -89,7 +98,7 @@ namespace NewStarterProject.Services
         {
             try
             {
-                var door = await _context.Doors.SingleAsync(a => a.DoorId == id);
+                var door = await _context.Doors.SingleAsync(a => a.DoorId == id && a.IsActive);
                 door.IsActive = false;
                 await _context.SaveChangesAsync();
                 return true;

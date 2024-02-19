@@ -31,7 +31,10 @@ namespace NewStarterProject.Services
             }
             else
             {
-                user = new User();
+                user = new User
+                {
+                    IsActive = true
+                };
                 _context.Users.Add(user);
             }
 
@@ -71,7 +74,7 @@ namespace NewStarterProject.Services
         /// <returns></returns>
         public async Task<UserDto> Get(int id)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(a => a.UserId == id);
+            var user = await _context.Users.SingleOrDefaultAsync(a => a.UserId == id && a.IsActive);
 
             return new UserDto
             {
@@ -90,7 +93,7 @@ namespace NewStarterProject.Services
         /// <returns></returns>
         public async Task<List<UserDto>> GetAllUsers()
         {
-            return await _context.Users.Select(a => new UserDto
+            return await _context.Users.Where(a => a.IsActive).Select(a => new UserDto
             {
                 UserId = a.UserId,
                 UserName = a.UserName,
@@ -112,7 +115,7 @@ namespace NewStarterProject.Services
         {
             try
             {
-                var user = await _context.Users.SingleAsync(a => a.UserId == id);
+                var user = await _context.Users.SingleAsync(a => a.UserId == id && a.IsActive);
                 user.IsActive = false;
                 await _context.SaveChangesAsync();
                 return true;

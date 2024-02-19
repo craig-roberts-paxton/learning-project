@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NewStarterProject.Dtos;
 using NewStarterProject.Model;
+using NewStarterProject.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,43 +12,58 @@ namespace NewStarterProject.Controllers
     public class DoorController : ControllerBase
     {
 
-        private StarterProjectContext _context;
+        private DoorService _service;
 
         public DoorController(StarterProjectContext context)
         {
-            _context = context;
+            _service = new DoorService(context);
         }
+
+        
+        // POST api/<DoorController>
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] DoorDto doorDto)
+        {
+            return Ok(await _service.CreateOrUpdateDoor(doorDto));
+        }
+
+        // PUT api/<DoorController>
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] DoorDto doorDto)
+        {
+            return Ok(await _service.CreateOrUpdateDoor(doorDto));
+        }
+        
 
         // GET: api/<DoorController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(await _service.GetAllDoors());
         }
+
 
         // GET api/<DoorController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            return "value";
+            return Ok(await _service.Get(id));
         }
 
-        // POST api/<DoorController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<DoorController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
+        
         // DELETE api/<DoorController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            var success = await _service.DeleteDoor(id);
+
+            if (success)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+
         }
     }
 }

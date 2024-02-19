@@ -29,7 +29,7 @@ namespace NewStarterProject.Services
             try
             {
                 user =
-                    await _context.Users.SingleAsync(a => a.UserName == userDto.UserName && a.PinCode == userDto.PinCode);
+                    await _context.Users.SingleAsync(a => a.UserName == userDto.UserName && a.PinCode == userDto.PinCode && a.IsActive);
             }
             catch (Exception e)
             {
@@ -63,6 +63,8 @@ namespace NewStarterProject.Services
 
         }
 
+
+
         /// <summary>
         /// Allow a user to access a door
         /// </summary>
@@ -74,6 +76,7 @@ namespace NewStarterProject.Services
             var existingRecord = await
                 _context.AccessControlDoorsToUsers.SingleOrDefaultAsync(a => a.DoorId == doorId && a.UserId == userId);
 
+            // Already exist - just return original record
             if (existingRecord != null)
             {
                 return new AccessControlDoorsToUserDto
@@ -84,7 +87,7 @@ namespace NewStarterProject.Services
                 };
             }
 
-            
+           
             var accessRecord = new AccessControlDoorsToUser
             {
                 DoorId = doorId,
@@ -107,8 +110,10 @@ namespace NewStarterProject.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw new Exception(e.Message);
+                return new AccessControlDoorsToUserDto
+                {
+                    AccessControlDoorsToUsersId = -1
+                };
             }
 
         }
@@ -119,11 +124,11 @@ namespace NewStarterProject.Services
         /// <param name="doorId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveAccessFromDoor(int doorId, int userId)
+        public async Task<bool> RemoveAccessFromDoor(int accessControlId)
         {
             var accessRecord =
                 await _context.AccessControlDoorsToUsers.SingleOrDefaultAsync(a =>
-                    a.DoorId == doorId && a.UserId == userId);
+                    a.AccessControlDoorsToUsersId == accessControlId);
 
             if (accessRecord != null)
             {
