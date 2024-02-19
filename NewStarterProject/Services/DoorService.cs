@@ -17,18 +17,22 @@ namespace NewStarterProject.Services
         /// </summary>
         /// <param name="doorDto"></param>
         /// <returns></returns>
-        public async Task CreateOrUpdateDoor(DoorDto doorDto)
+        public async Task<DoorDto> CreateOrUpdateDoor(DoorDto doorDto)
         {
             Door door;
 
+            // If there's an ID then it's an existing door
             if (doorDto.DoorId > 0)
             {
                 door = await _context.Doors.SingleAsync(a => a.DoorId == doorDto.DoorId);
             }
+
+            // Otherwise create a new one
             else
             {
                 door = new Door();
                 _context.Doors.Add(door);
+                
             }
 
             if (door.DoorName != doorDto.DoorName)
@@ -37,6 +41,9 @@ namespace NewStarterProject.Services
             }
 
             await _context.SaveChangesAsync();
+            doorDto.DoorId = door.DoorId;
+
+            return doorDto;
 
         }
 
@@ -72,7 +79,12 @@ namespace NewStarterProject.Services
             }).ToListAsync();
         }
 
-
+        /// <summary>
+        /// Sets a door to inactive - we can't delete the actual record due to FK constraints on the audit. In real world,
+        /// we could decide not to care as much
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteDoor(int id)
         {
             try

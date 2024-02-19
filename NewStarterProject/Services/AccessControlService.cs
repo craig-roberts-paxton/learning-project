@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using NewStarterProject.Dtos;
 using NewStarterProject.Model;
 
@@ -7,7 +8,7 @@ namespace NewStarterProject.Services
     public class AccessControlService
     {
 
-        private StarterProjectContext _context;
+        private readonly StarterProjectContext _context;
 
         public AccessControlService(StarterProjectContext context)
         {
@@ -32,12 +33,7 @@ namespace NewStarterProject.Services
             }
             catch (Exception e)
             {
-                await _context.AccessAudits.AddAsync(new AccessAudit
-                {
-                    DoorId = doorId,
-                    AccessGranted = false
-                });
-
+                // If there's no valid user record, they obviously don't have access
                 await _context.AccessAudits.AddAsync(new AccessAudit
                 {
                     DoorId = doorId,
@@ -49,10 +45,11 @@ namespace NewStarterProject.Services
                 return validAccess;
             }
 
-
+            // Check if there's a record for this door / user combination. If there is, we can grant access
             validAccess = await _context.AccessControlDoorsToUsers.Include(a => a.User)
-                .AnyAsync(a => a.DoorId == doorId && a.UserId == user.UserId);
+                                                                  .AnyAsync(a => a.DoorId == doorId && a.UserId == user.UserId);
 
+            // Log the attempt
             await _context.AccessAudits.AddAsync(new AccessAudit
             {
                 UserId = user.UserId,
@@ -72,22 +69,48 @@ namespace NewStarterProject.Services
         /// <param name="doorId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task AllowAccessToDoor(int doorId, int userId)
+        public async Task<AccessControlDoorsToUserDto> AllowAccessToDoor(int doorId, int userId)
         {
             var existingRecord = await
-                _context.AccessControlDoorsToUsers.AnyAsync(a => a.DoorId == doorId && a.UserId == userId);
+                _context.AccessControlDoorsToUsers.SingleOrDefaultAsync(a => a.DoorId == doorId && a.UserId == userId);
 
-            if (!existingRecord)
+            if (existingRecord != null)
             {
-                var accessRecord = new AccessControlDoorsToUser
+                return new AccessControlDoorsToUserDto
                 {
-                    DoorId = doorId,
-                    UserId = userId
+                    AccessControlDoorsToUsersId = existingRecord.AccessControlDoorsToUsersId,
+                    DoorId = existingRecord.DoorId,
+                    UserId = existingRecord.UserId
+                };
+            }
+
+            
+            var accessRecord = new AccessControlDoorsToUser
+            {
+                DoorId = doorId,
+                UserId = userId
+            };
+
+            await _context.AccessControlDoorsToUsers.AddAsync(accessRecord);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                return new AccessControlDoorsToUserDto
+                {
+                    AccessControlDoorsToUsersId = accessRecord.AccessControlDoorsToUsersId,
+                    DoorId = accessRecord.DoorId,
+                    UserId = accessRecord.UserId
                 };
 
-                await _context.AccessControlDoorsToUsers.AddAsync(accessRecord);
-                await _context.SaveChangesAsync();
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
         }
 
         /// <summary>
@@ -96,7 +119,7 @@ namespace NewStarterProject.Services
         /// <param name="doorId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task RemoveAccessFromDoor(int doorId, int userId)
+        public async Task<bool> RemoveAccessFromDoor(int doorId, int userId)
         {
             var accessRecord =
                 await _context.AccessControlDoorsToUsers.SingleOrDefaultAsync(a =>
@@ -106,7 +129,11 @@ namespace NewStarterProject.Services
             {
                 _context.AccessControlDoorsToUsers.Remove(accessRecord);
                 await _context.SaveChangesAsync();
+
+                return true;
             }
+
+            return false;
         }
 
 
@@ -146,23 +173,25 @@ namespace NewStarterProject.Services
 
 
         /// <summary>
-        /// Returns audit records - can be all records, or for a door or a user combination
+        /// Returns audit records - can be all records, or for a door or a user or a combination of both
         /// </summary>
         /// <param name="doorId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
         public async Task<List<AuditRecordForDisplayDto>> GetAccessRecords(int? doorId, int? userId)
         {
-            return await _context.AccessAudits.Include(a => a.Door).Include(a => a.User)
-                .Where(a => (doorId == null || a.DoorId == doorId))
-                .Where(a => userId == null || a.UserId == userId).Select(
-                    a => new AuditRecordForDisplayDto()
-                    {
-                        DoorName = a.Door.DoorName,
-                        UserName = a.User.UserName,
-                        AuditDateTime = a.AuditDateTime,
-                        AccessGranted = a.AccessGranted ? "Granted" : "Denied"
-                    }).ToListAsync();
+            return await _context.AccessAudits
+                                 .Include(a => a.Door)
+                                 . Include(a => a.User)
+                                 .Where(a => (doorId == null || a.DoorId == doorId))
+                                 .Where(a => userId == null || a.UserId == userId)
+                                 .Select(a => new AuditRecordForDisplayDto()
+                                 {
+                                    DoorName = a.Door.DoorName,
+                                    UserName = a.User.UserName,
+                                    AuditDateTime = a.AuditDateTime,
+                                    AccessGranted = a.AccessGranted ? "Granted" : "Denied"
+                                 }).ToListAsync();
         }
 
     }

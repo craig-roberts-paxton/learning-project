@@ -20,7 +20,7 @@ namespace NewStarterProject.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task CreateOrUpdateUser(UserDto userDto)
+        public async Task<UserDto> CreateOrUpdateUser(UserDto userDto)
         {
             User user;
 
@@ -35,7 +35,7 @@ namespace NewStarterProject.Services
                 _context.Users.Add(user);
             }
 
-            // Update the values
+            // Update the values - obviously these will be empty for a new user
 
             if (user.FirstName != userDto.FirstName)
             {
@@ -52,13 +52,15 @@ namespace NewStarterProject.Services
                 user.UserName = userDto.UserName;
             }
 
-
             if (user.PinCode != userDto.PinCode)
             {
                 user.PinCode = userDto.PinCode;
             }
 
             await _context.SaveChangesAsync();
+            userDto.UserId = userDto.UserId;
+
+            return userDto;
 
         }
 
