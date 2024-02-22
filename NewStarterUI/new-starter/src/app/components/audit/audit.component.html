@@ -1,0 +1,44 @@
+<div class="panel">
+    <div class="panel-heading">Access Log</div>
+
+    <div class="panel-content">
+        <mat-form-field>
+            <mat-select placeholder="Select door" [(value)]="selectedDoor">
+                <mat-option *ngFor="let item of doors" [value]="item">{{item.doorName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Select user" [(value)]="selectedUser">
+                <mat-option *ngFor="let item of users" [value]="item">{{item.firstName}} {{item.lastName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button (click)="getAudits(selectedDoor, selectedUser)">Filter</button>
+
+        <mat-table [dataSource]="dataSource">
+            <!-- ID Column -->
+            <ng-container matColumnDef="doorName">
+                <mat-header-cell *matHeaderCellDef>Door</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.doorName }}</mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="userName">
+                <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.userName }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="auditDateTime">
+                <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.auditDateTime | date: 'dd/MM/yyyy HH:mm:ss' }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="accessGranted">
+                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.accessGranted}}</mat-cell>
+            </ng-container>
+            <!-- Header and Row Definitions -->
+            <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+            <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageSizeOptions]="[10,20,50,100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

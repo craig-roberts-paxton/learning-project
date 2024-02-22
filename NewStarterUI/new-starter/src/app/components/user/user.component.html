@@ -1,0 +1,56 @@
+<div class="panel">
+    <div class="panel-heading">Users</div>
+
+    <div class="panel-content">
+        <button mat-raised-button (click)="newUser()">Add New User</button>
+        <div class="container">
+            <mat-table [dataSource]="users">
+                <!-- ID Column -->
+                <ng-container matColumnDef="userId">
+                    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.userId }}</mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="firstName">
+                    <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.firstName }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="lastName">
+                    <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.lastName }}</mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="userName">
+                    <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.userName }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pinCode">
+                    <mat-header-cell *matHeaderCellDef>Very Secure PIN</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.pinCode}}</mat-cell>
+                </ng-container>
+
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="action-link">
+                        <button mat-raised-button class="edit_deleteBtn" (click)="openDialog('Update', element)">
+                            <i class="fas fa-pen">Edit</i>
+                        </button>&nbsp;&nbsp;&nbsp; <button mat-raised-button class="edit_deleteBtn"
+                            (click)="deleteUser(element.userId)">
+                            <i class="far fa-trash-alt">Delete</i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Header and Row Definitions -->
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

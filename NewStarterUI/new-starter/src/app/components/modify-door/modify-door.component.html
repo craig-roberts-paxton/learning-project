@@ -1,0 +1,15 @@
+<div class="panel">
+    <div class="panel-heading">Edit Door</div>
+
+    <div class="panel-content">
+
+        <form>
+            <label for="doorName">Door Name</label>
+            <mat-form-field>
+                <input matInput [(ngModel)]="data.door.doorName" name="doorName">
+            </mat-form-field>
+        </form>
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    </div>
+</div>

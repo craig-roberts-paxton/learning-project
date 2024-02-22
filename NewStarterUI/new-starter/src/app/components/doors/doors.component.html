@@ -1,0 +1,56 @@
+<div class="panel">
+    <div class="panel-heading">Doors</div>
+
+    <div class="panel-content">
+        <div class="container">
+
+            <form [formGroup]="newDoorForm">
+                <mat-form-field>
+                    <input matInput id="door-name" type="text" formControlName="doorName" placeholder="Door name">
+                </mat-form-field>
+                <button mat-raised-button (click)="createNewDoor()">Add</button>
+
+
+            </form>
+            <mat-table [dataSource]="doors">
+                <!-- ID Column -->
+                <ng-container matColumnDef="doorId">
+                    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.doorId }}</mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="doorName">
+                    <mat-header-cell *matHeaderCellDef>Door Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.doorName }}</mat-cell>
+                </ng-container>
+
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="action-link">
+                        <button mat-raised-button class="edit_deleteBtn" (click)="openDoorDialog('Update', element)">
+                            <i class="fas fa-pen">Edit</i>
+                        </button>&nbsp;&nbsp;&nbsp;
+
+                        <button mat-raised-button class="edit_deleteBtn" (click)="deleteDoor(element.doorId)">
+                            <i class="far fa-trash-alt">Delete</i>
+                        </button>&nbsp;&nbsp;&nbsp;
+
+                        <button mat-raised-button class="edit_deleteBtn" (click)="openUsersDialog(element)">
+                            <i class="far fa-trash-alt">Manage Users</i>
+                        </button>&nbsp;&nbsp;&nbsp;
+                        <button mat-raised-button class="edit_deleteBtn" (click)="openAccessDialog(element)">
+                            <i class="far fa-trash-alt">Access</i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Header and Row Definitions -->
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.result {
+    margin-left: 20px;
+}
+
+.access-granted {
+    color: green;
+    font-size: larger;
+}
+
+.access-denied {
+    color: red;
+    font-size: larger;
+}

@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    padding: 20px;
+}
+
+.panel {
+    border: 1px solid grey;
+    border-radius: 7px;
+}
+
+.panel-content {
+
+    padding: 20px;
+}
+
+.panel-heading {
+    display: block;
+    padding: 10px;
+    font-size: x-large;
+    background-color: cadetblue;
+    margin: 0;
+    color: white;
+}
+
+.page-heading {
+    display: block;
+    padding: 10px;
+    font-size: x-large;
+}

@@ -1,0 +1,30 @@
+<div class="panel">
+    <div class="panel-heading">Access {{data.door.doorName}}</div>
+
+    <div class="panel-content">
+        <div class="container">
+            <form>
+                <mat-form-field>
+                    <label for="userName">Username</label>
+                    <input matInput [(ngModel)]="selectedUser.userName" name="userName" id="userName">
+                </mat-form-field>
+                <mat-form-field>
+                    <label for="pinCode">Pin Code</label>
+                    <input matInput [(ngModel)]="selectedUser.pinCode" name="pinCode" id="pinCode">
+                </mat-form-field>
+            </form>
+            <button mat-raised-button (click)="checkAccess()">Open</button>
+            @if(doorOpen != undefined)
+            {
+            @if(doorOpen)
+            {
+            <span class="result access-granted">Access Granted!</span>
+            }
+            @else
+            {
+            <span class="result access-denied">Access Denied!</span>
+            }
+            }
+        </div>
+    </div>
+</div>

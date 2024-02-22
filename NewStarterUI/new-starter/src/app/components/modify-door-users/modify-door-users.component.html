@@ -1,0 +1,61 @@
+<div class="panel">
+    <div class="panel-heading">Access Control: {{data.door.doorName}}</div>
+
+    <div class="panel-content">
+
+        <div class="container">
+
+            <!-- this is klunky - should really be in a loading function, but trying to speed through this now -->
+            @if (doorUsers) {
+            <h4>The following users are associated with this door: </h4>
+            <mat-table [dataSource]="doorUsers">
+                <!-- ID Column -->
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="firstName">
+                    <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.firstName }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="lastName">
+                    <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.lastName }}</mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="userName">
+                    <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{ element.userName }}</mat-cell>
+                </ng-container>
+
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="action-link">
+                        <button mat-raised-button class="edit_deleteBtn" (click)="removeUserFromDoor(element.userId)">
+                            <i>Delete</i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Header and Row Definitions -->
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageSizeOptions]="[4]" showFirstLastButtons></mat-paginator>
+            }
+            @else {
+            <h4>No associated users</h4>
+            }
+
+            <hr />
+            <h4>Assign a user to this door</h4>
+            <mat-select aria-placeholder="Select User" [(value)]="selectedUserToAdd">
+                <mat-option *ngFor="let item of addableUsers" [value]="item">{{item.firstName}}
+                    {{item.lastName}}</mat-option>
+            </mat-select>
+            <button mat-button mat-raised-button class="edit_deleteBtn" (click)="addUserToDoor()">Add</button>
+        </div>
+    </div>
+</div>

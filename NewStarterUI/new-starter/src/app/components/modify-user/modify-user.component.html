@@ -1,0 +1,30 @@
+<div class="panel">
+    <div class="panel-heading">{{data.header}}</div>
+
+    <div class="panel-content">
+        <mat-card-content>
+            <form>
+                <mat-form-field>
+                    <label for="firstName">First Name</label>
+                    <input matInput [(ngModel)]="data.user.firstName" name="firstName" id="firstName">
+                </mat-form-field>
+                <mat-form-field>
+                    <label for="lastName">Last Name</label>
+                    <input matInput [(ngModel)]="data.user.lastName" name="lastName" id="lastName">
+                </mat-form-field>
+                <mat-form-field>
+                    <label for="userName">Username</label>
+                    <input matInput [(ngModel)]="data.user.userName" name="userName" id="userName">
+                </mat-form-field>
+                <mat-form-field>
+                    <label for="pinCode">Pin Code</label>
+                    <input matInput [(ngModel)]="data.user.pinCode" name="pinCode" id="pinCode">
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button (click)="onCancel()">Cancel</button>
+            <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+        </mat-card-actions>
+    </div>
+</div>
