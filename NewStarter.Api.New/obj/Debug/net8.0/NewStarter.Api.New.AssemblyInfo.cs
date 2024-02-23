@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NewStarter.Api.New")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea6244fa4911277977b9424efcbf1f46f51622f9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+edf2f7ea2f8e8ee77fbb96ef5339c2fa0637c06c")]
 [assembly: System.Reflection.AssemblyProductAttribute("NewStarter.Api.New")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NewStarter.Api.New")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

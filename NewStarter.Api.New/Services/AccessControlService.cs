@@ -1,25 +1,18 @@
-﻿using NewStarter.Application.Interfaces;
-using NewStarter.Domain.Dtos;
+﻿using NewStarter.Api.Dtos;
+using NewStarter.Api.Interfaces;
 using NewStarter.Domain.Model;
-
+using NewStarterProject.NewStarter.Domain.Model;
 
 namespace NewStarter.Application
 {
     public class AccessControlService : IAccessControlService
     {
 
-        private readonly IDataStore<AccessAudit> _auditContext;
-        private readonly IDataStore<User> _userContext;
-        private readonly IDataStore<AccessControlDoorsToUser> _accessControlContext;
+        private readonly IDataStore _context;
 
-        public AccessControlService(IDataStore<AccessAudit> accessAuditRepository,
-            IDataStore<Door> doorRepository,
-            IDataStore<User> userAuditRepository,
-            IDataStore<AccessControlDoorsToUser> accessControlRepository)
+        public AccessControlService(IDataStore dbContext)
         {
-            _auditContext = accessAuditRepository;
-            _userContext = userAuditRepository;
-            _accessControlContext = accessControlRepository;
+            _context = dbContext;
         }
 
 
@@ -36,33 +29,44 @@ namespace NewStarter.Application
 
             try
             {
-                user = _userContext.GetAll().SingleOrDefault(a =>
-                        a.UserName.ToLower() == userDto.UserName.ToLower() && a.PinCode == userDto.PinCode &&
-                        a.IsActive);
+                user =
+                    await _context.Users.SingleAsync(a => a.UserName.ToLower() == userDto.UserName.ToLower() && a.PinCode == userDto.PinCode && a.IsActive);
             }
             catch (Exception e)
             {
                 // If there's no valid user record, they obviously don't have access
-                await _auditContext.Create(new AccessAudit
+                await _context.AccessAudits.AddAsync(new AccessAudit
                 {
                     DoorId = doorId,
                     AccessGranted = validAccess,
                 });
 
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    throw;
+                }
+
                 return validAccess;
             }
 
             // Check if there's a record for this door / user combination. If there is, we can grant access
-            validAccess = _accessControlContext.GetAll(a => a.User)
-                                                .Any(a => a.DoorId == doorId && a.UserId == user.UserId);
+            validAccess = await _context.AccessControlDoorsToUsers.Include(a => a.User)
+                                                                  .AnyAsync(a => a.DoorId == doorId && a.UserId == user.UserId);
 
             // Log the attempt
-            await _auditContext.Create(new AccessAudit
+            await _context.AccessAudits.AddAsync(new AccessAudit
             {
                 UserId = user.UserId,
                 DoorId = doorId,
                 AccessGranted = validAccess
             });
+
+            await _context.SaveChangesAsync();
 
             return validAccess;
 
@@ -78,7 +82,8 @@ namespace NewStarter.Application
         /// <returns></returns>
         public async Task<AccessControlDoorsToUserDto> AllowAccessToDoor(int doorId, int userId)
         {
-            var existingRecord = _accessControlContext.GetAll().SingleOrDefault(a => a.DoorId == doorId && a.UserId == userId);
+            var existingRecord = await
+                _context.AccessControlDoorsToUsers.SingleOrDefaultAsync(a => a.DoorId == doorId && a.UserId == userId);
 
             // Already exist - just return original record
             if (existingRecord != null)
@@ -98,14 +103,28 @@ namespace NewStarter.Application
                 UserId = userId
             };
 
-            await _accessControlContext.Create(accessRecord);
+            await _context.AccessControlDoorsToUsers.AddAsync(accessRecord);
 
-            return new AccessControlDoorsToUserDto
+            try
             {
-                AccessControlDoorsToUsersId = accessRecord.AccessControlDoorsToUsersId,
-                DoorId = accessRecord.DoorId,
-                UserId = accessRecord.UserId
-            };
+                await _context.SaveChangesAsync();
+
+                return new AccessControlDoorsToUserDto
+                {
+                    AccessControlDoorsToUsersId = accessRecord.AccessControlDoorsToUsersId,
+                    DoorId = accessRecord.DoorId,
+                    UserId = accessRecord.UserId
+                };
+
+            }
+            catch (Exception e)
+            {
+                return new AccessControlDoorsToUserDto
+                {
+                    AccessControlDoorsToUsersId = -1
+                };
+            }
+
         }
 
         /// <summary>
@@ -117,12 +136,18 @@ namespace NewStarter.Application
         public async Task<bool> RemoveAccessFromDoor(int doorId, int userId)
         {
             var accessRecord =
-                 _accessControlContext.GetAll().Single(a =>
+                await _context.AccessControlDoorsToUsers.SingleOrDefaultAsync(a =>
                     a.DoorId == doorId && a.UserId == userId);
 
-            _accessControlContext.Delete(accessRecord.AccessControlDoorsToUsersId);
+            if (accessRecord != null)
+            {
+                _context.AccessControlDoorsToUsers.Remove(accessRecord);
+                await _context.SaveChangesAsync();
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
 
 
@@ -133,7 +158,7 @@ namespace NewStarter.Application
         /// <returns></returns>
         public async Task<List<UserDto>> GetUsersAssignedToDoor(int doorId)
         {
-            return _accessControlContext.GetAll(a => a.User)
+            return await _context.AccessControlDoorsToUsers.Include(a => a.User)
                 .Where(a => a.DoorId == doorId).Select(a => new UserDto()
                 {
                     UserId = a.User.UserId,
@@ -141,7 +166,7 @@ namespace NewStarter.Application
                     FirstName = a.User.FirstName ?? "",
                     LastName = a.User.LastName,
                     PinCode = "XXXXXXXX"
-                }).ToList();
+                }).ToListAsync();
         }
 
 
@@ -154,18 +179,18 @@ namespace NewStarter.Application
         {
             try
             {
-                var assignedUserIds = _accessControlContext.GetAll().Where(a => a.DoorId == doorId).Select(a => a.UserId).ToList();
+                var assignedUserIds = await _context.AccessControlDoorsToUsers.Where(a => a.DoorId == doorId).Select(a => a.UserId).ToListAsync();
 
                 // Shouldn't have to do this in 2 steps,
                 // but I think there's a SQL setting I'm missing or something.
                 // But for the purposes of demo code, I think this is okay as there won't be hundreds of users
-                var users = _userContext.GetAll().Select(a => new UserDto()
+                var users = await _context.Users.Select(a => new UserDto()
                 {
                     UserId = a.UserId,
                     UserName = a.UserName ?? "",
                     FirstName = a.FirstName ?? "",
                     LastName = a.LastName
-                }).ToList();
+                }).ToListAsync();
 
                 return users.Where(a => !assignedUserIds.Contains(a.UserId)).ToList();
 
@@ -184,12 +209,12 @@ namespace NewStarter.Application
         /// <returns></returns>
         public async Task<List<DoorDto>> GetDoorsAssignedToUser(int userId)
         {
-            return _accessControlContext.GetAll(a => a.Door)
+            return await _context.AccessControlDoorsToUsers.Include(a => a.Door)
                 .Where(a => a.UserId == userId).Select(a => new DoorDto()
                 {
                     DoorId = a.DoorId,
                     DoorName = a.Door.DoorName
-                }).ToList();
+                }).ToListAsync();
         }
 
 
@@ -202,16 +227,18 @@ namespace NewStarter.Application
         /// <returns></returns>
         public async Task<List<AuditRecordForDisplayDto>> GetAccessRecords(int doorId, int userId)
         {
-            return _auditContext.GetAll(a => a.Door, a => a.User)
-
+            return await _context.AccessAudits
+                                 .Include(a => a.Door)
+                                 .Include(a => a.User)
                                  .Where(a => doorId == 0 || a.DoorId == doorId)
                                  .Where(a => userId == 0 || a.UserId == userId)
                                  .Select(a => new AuditRecordForDisplayDto()
                                  {
                                      DoorName = a.Door.DoorName,
+                                     UserName = a.UserId == null ? "Unknown" : $"{a.User.FirstName} {a.User.LastName}",
                                      AuditDateTime = a.AuditDateTime,
                                      AccessGranted = a.AccessGranted ? "Granted" : "Denied"
-                                 }).OrderByDescending(a => a.AuditDateTime).ToList();
+                                 }).OrderByDescending(a => a.AuditDateTime).ToListAsync();
         }
 
     }
