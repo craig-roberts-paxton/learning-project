@@ -1,0 +1,12 @@
+C:\Workspace\learning-project\NewStarter.Domain\bin\Debug\net8.0\NewStarter.Domain.deps.json
+C:\Workspace\learning-project\NewStarter.Domain\bin\Debug\net8.0\NewStarter.Domain.dll
+C:\Workspace\learning-project\NewStarter.Domain\bin\Debug\net8.0\NewStarter.Domain.pdb
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.AssemblyInfoInputs.cache
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.AssemblyInfo.cs
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.csproj.CoreCompileInputs.cache
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.sourcelink.json
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.dll
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\refint\NewStarter.Domain.dll
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\NewStarter.Domain.pdb
+C:\Workspace\learning-project\NewStarter.Domain\obj\Debug\net8.0\ref\NewStarter.Domain.dll

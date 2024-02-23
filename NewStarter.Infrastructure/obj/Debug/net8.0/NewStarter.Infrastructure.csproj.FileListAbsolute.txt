@@ -1,0 +1,16 @@
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.csproj.AssemblyReference.cache
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.AssemblyInfoInputs.cache
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.AssemblyInfo.cs
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.sourcelink.json
+C:\Workspace\learning-project\NewStarter.Infrastructure\bin\Debug\net8.0\NewStarter.Infrastructure.deps.json
+C:\Workspace\learning-project\NewStarter.Infrastructure\bin\Debug\net8.0\NewStarter.Infrastructure.dll
+C:\Workspace\learning-project\NewStarter.Infrastructure\bin\Debug\net8.0\NewStarter.Infrastructure.pdb
+C:\Workspace\learning-project\NewStarter.Infrastructure\bin\Debug\net8.0\NewStarter.Domain.dll
+C:\Workspace\learning-project\NewStarter.Infrastructure\bin\Debug\net8.0\NewStarter.Domain.pdb
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.csproj.CopyComplete
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.dll
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\refint\NewStarter.Infrastructure.dll
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\NewStarter.Infrastructure.pdb
+C:\Workspace\learning-project\NewStarter.Infrastructure\obj\Debug\net8.0\ref\NewStarter.Infrastructure.dll

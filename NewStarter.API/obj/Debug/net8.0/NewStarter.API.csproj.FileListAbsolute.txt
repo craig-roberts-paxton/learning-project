@@ -1,0 +1,6 @@
+C:\Workspace\learning-project\NewStarter.API\obj\Debug\net8.0\NewStarter.API.csproj.AssemblyReference.cache
+C:\Workspace\learning-project\NewStarter.API\obj\Debug\net8.0\NewStarter.API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\learning-project\NewStarter.API\obj\Debug\net8.0\NewStarter.API.AssemblyInfoInputs.cache
+C:\Workspace\learning-project\NewStarter.API\obj\Debug\net8.0\NewStarter.API.AssemblyInfo.cs
+C:\Workspace\learning-project\NewStarter.API\obj\Debug\net8.0\NewStarter.API.csproj.CoreCompileInputs.cache
+C:\Workspace\learning-project\NewStarter.API\obj\Debug\net8.0\NewStarter.API.sourcelink.json
