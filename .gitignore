@@ -27,3 +27,9 @@ NewStarterProject/bin/Debug/net8.0/NewStarterProject.deps.json
 NewStarterProject/bin/Debug/net8.0/NewStarterProject.pdb
 NewStarterProject/bin/Debug/net8.0/NewStarterProject.runtimeconfig.json
 *.vsidx
+NewStarter.Api.New/obj/Debug/net8.0/NewStarter.Api.New.AssemblyInfo.cs
+NewStarter.Api.New/obj/Debug/net8.0/NewStarter.Api.New.AssemblyInfo.cs
+NewStarter.Application/obj/Debug/net8.0/NewStarter.Application.AssemblyInfo.cs
+NewStarter.Domain/obj/Debug/net8.0/NewStarter.Domain.AssemblyInfo.cs
+NewStarter.Infrastructure/obj/Debug/net8.0/NewStarter.Infrastructure.AssemblyInfo.cs
+NewStarter.Api.New/obj/Debug/net8.0/NewStarter.Api.New.AssemblyInfo.cs
