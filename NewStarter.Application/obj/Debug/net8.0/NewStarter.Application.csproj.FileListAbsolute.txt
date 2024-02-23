@@ -1,0 +1,16 @@
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.AssemblyInfoInputs.cache
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.AssemblyInfo.cs
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.csproj.CoreCompileInputs.cache
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.sourcelink.json
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.csproj.AssemblyReference.cache
+C:\Workspace\learning-project\NewStarter.Application\bin\Debug\net8.0\NewStarter.Application.deps.json
+C:\Workspace\learning-project\NewStarter.Application\bin\Debug\net8.0\NewStarter.Application.dll
+C:\Workspace\learning-project\NewStarter.Application\bin\Debug\net8.0\NewStarter.Application.pdb
+C:\Workspace\learning-project\NewStarter.Application\bin\Debug\net8.0\NewStarter.Domain.dll
+C:\Workspace\learning-project\NewStarter.Application\bin\Debug\net8.0\NewStarter.Domain.pdb
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.csproj.CopyComplete
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.dll
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\refint\NewStarter.Application.dll
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\NewStarter.Application.pdb
+C:\Workspace\learning-project\NewStarter.Application\obj\Debug\net8.0\ref\NewStarter.Application.dll
