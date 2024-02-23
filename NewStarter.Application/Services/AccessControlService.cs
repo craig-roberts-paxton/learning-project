@@ -13,7 +13,6 @@ namespace NewStarter.Application
         private readonly IDataStore<AccessControlDoorsToUser> _accessControlContext;
 
         public AccessControlService(IDataStore<AccessAudit> accessAuditRepository,
-            IDataStore<Door> doorRepository,
             IDataStore<User> userAuditRepository,
             IDataStore<AccessControlDoorsToUser> accessControlRepository)
         {
