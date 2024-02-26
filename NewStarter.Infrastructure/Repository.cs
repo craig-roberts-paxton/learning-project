@@ -27,7 +27,7 @@ namespace NewStarter.Infrastructure
             return query;
         }
 
-        public async Task<TEntity?> GetById(params long[] id)
+        public async Task<TEntity?> GetById(int id)
         {
             return await _dbContext.Set<TEntity>()
                 .FindAsync(id);

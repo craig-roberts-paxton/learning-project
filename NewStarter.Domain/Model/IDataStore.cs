@@ -9,7 +9,7 @@ namespace NewStarter.Domain.Model
     {
         IQueryable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes);
 
-        Task<TEntity?> GetById(params long[] id);
+        Task<TEntity?> GetById(int id);
 
         Task Create(TEntity entity);
 
